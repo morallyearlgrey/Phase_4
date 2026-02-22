@@ -41,6 +41,7 @@ module DATA_MEMORY (
             endcase
             
         end else begin 
+            oReadData = 32'b0;
 
         end    
     end
