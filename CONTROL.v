@@ -111,6 +111,8 @@ always @(*) begin
             rAluSrc2  = 1;
         end
 
+        default: begin end
+
     endcase
 end
 
