@@ -1,12 +1,12 @@
 // ALU module definition
-`include "AND.v"
-`include "barrel_shifter.v"
-`include "comparator.v"
-`include "LCA.v"
-`include "OR.v"
-`include "slt.v"
-`include "sltu.v"
-`include "XOR.v"
+// `include "AND.v"
+// `include "barrel_shifter.v"
+// `include "comparator.v"
+// `include "LCA.v"
+// `include "OR.v"
+// `include "slt.v"
+// `include "sltu.v"
+// `include "XOR.v"
 
 
 // ALU module definition
@@ -35,20 +35,12 @@ module ALU (
   localparam BNE  = 4'b1100;
   localparam BLT  = 4'b1010;
   localparam BGE  = 4'b1110;
+  localparam BLTU = 4'b1011;
+  localparam BGEU = 4'b1111;
 
   // Illegal operators
   // * , / , + , - , << , >> , <<< , >>>
   // so only logic gates and no shifting
-
-  //
-  //     1. imm or reg? decoder (based on op code)
-  //     2. implement LCA (look ahead carry adder) > Dawn shall do this
-  //          This handles Add and Sub (need two's compliment)
-  //     3. bit shifting (shift left and shift right) > Eren....barrel shifting (wo clock)
-  //     4. Logical (does not preserve sign) and arithmetic (preseves sign)
-  //         OR (Eren), AND (Dawn), NOT, XOR, Compariter
-  //     5. Multiplexer
-
 
   //     Operations that ALU needs to perform
   //     Arithmetic Operations:
@@ -155,6 +147,27 @@ module ALU (
         .iDataB(iDataB),
         .oData(wXor)
       );
+  
+  // --- BLTU MODULE ---
+  wire [31:0] wBLTU;
+  wire [2:0] wBLTU_output;
+  comparator BLTUmod(
+    .iDataA(iDataA),
+    .iDataB(iDataB),
+    .oData(wBLTU_output)
+  );
+  assign wBLTU = (wBLTU_output == 3'b100) ? 32'd1 : 32'd0;
+
+  // --- BGEU MODULE ---
+  wire [31:0] wBGEU;
+  wire [2:0] wBGEU_output;
+  comparator BGEUmod(
+    .iDataA(iDataA),
+    .iDataB(iDataB),
+    .oData(wBGEU_output)
+  );
+  assign wBGEU = (wBGEU_output == 3'b010 || wBGEU_output == 3'b001) ? 32'd1 : 32'd0;
+
 
   // --- OUTPUT MUX ---
   always @(*)
@@ -219,6 +232,16 @@ module ALU (
       begin
         oData = wSum;        // Subtraction result
         oZero = ~slt_res[0]; // 1 if Greater or Equal (A >= B)
+      end
+      BLTU:
+      begin
+        oData = wBLTU;
+        oZero = ~slt_res[0];
+      end
+      BGEU:
+      begin
+        oData = wBGEU;
+        oZero = ~slt_res[0];
       end
 
       default:
