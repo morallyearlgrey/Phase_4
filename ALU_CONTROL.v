@@ -21,26 +21,26 @@ module ALU_CONTROL (
 */
 
 
-    // ALU Control Values
-    localparam ADD = 4'b0000;
-    localparam SUB = 4'b1000;
-    localparam SLL = 4'b0001;
-    localparam SRL = 4'b1001;
-    localparam SRA = 4'b1101;
-    localparam SLT = 4'b0010;
-    localparam SLTU = 4'b0011;
-    localparam XOR = 4'b0100;
-    localparam OR = 4'b0110;
-    localparam AND = 4'b0111;
-    localparam BEQ = 4'b1000;
-    localparam BNE = 4'b1100;
-    localparam BLT = 4'b1010;
-    localparam BGE = 4'b1110;
-    localparam BLTU = 4'b1011;
-    localparam BGEU = 4'b1111;
+// ALU Control Values
+localparam ADD = 4'b0000;
+localparam SUB = 4'b1000;
+localparam SLL = 4'b0001;
+localparam SRL = 4'b1001;
+localparam SRA = 4'b1101;
+localparam SLT = 4'b0010;
+localparam SLTU = 4'b0011;
+localparam XOR = 4'b0100;
+localparam OR = 4'b0110;
+localparam AND = 4'b0111;
+localparam BEQ = 4'b1000;
+localparam BNE = 4'b1100;
+localparam BLT = 4'b1010;
+localparam BGE = 4'b1110;
+localparam BLTU = 4'b1011;
+localparam BGEU = 4'b1111;
 
-    reg [3:0] rAluCtrl;
-    assign oAluCtrl = rAluCtrl;
+reg [3:0] rAluCtrl;
+assign oAluCtrl = rAluCtrl;
 
 always @(*) begin
     rAluCtrl = 4'b0000;
