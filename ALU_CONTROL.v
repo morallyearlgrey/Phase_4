@@ -36,133 +36,106 @@ module ALU_CONTROL (
     localparam BNE = 4'b1100;
     localparam BLT = 4'b1010;
     localparam BGE = 4'b1110;
+    localparam BLTU = 4'b1011;
+    localparam BGEU = 4'b1111;
+
+    reg [3:0] rAluCtrl;
+    assign oAluCtrl = rAluCtrl;
 
 always @(*) begin
+    rAluCtrl = 4'b0000;
     case (iAluOp)
 
-        3'b000: // THE REST OF THE INSTRUCTIONS
-        // I AM CONFUSED, SO THIS PORTION IS NOT DONE.....
+        3'b000: // Adding values for later use in ALU
+        // why add? Because the remaning instrctions (not listed above)
+            // are fundamentally adding numbers and saving them in specific places
         begin
-            if(iFunct3 == 3'd0)
-                oAluCtrl = LB;
-
-            if(iFunct3 == 3'b001)
-                oAluCtrl = LH;
-
-            if(iFunct3 == 3'b010)
-                oAluCtrl = LW;
-
-            if(iFunct3 == 3'b100)
-                oAluCtrl = LBU;
-
-            if(iFunct3 == 3'b101)
-                oAluCtrl = LHU;
-
-            if(iFunct3 == 3'b111)
-                oAluCtrl = ;
-
-            if(iFunct3 == 3'd0)
-                oAluCtrl = ;
-
-            if(iFunct3 == 3'b001)
-                oAluCtrl = ;
-
-            if(iFunct3 == 3'b100)
-                oAluCtrl = ;
-
-            if(iFunct3 == 3'b101)
-                oAluCtrl = ;
-
-            if(iFunct3 == 3'b110)
-                oAluCtrl = ;
-
-            if(iFunct3 == 3'b111)
-                oAluCtrl = ;
+            rAluCtrl = ADD;
         end
 
         3'b001: // BRANCH INSTRUCTIONS
         begin
             if(iFunct3 == 3'd0)
-                oAluCtrl = BEQ;
+                rAluCtrl = BEQ;
 
             if(iFunct3 == 3'b001)
-                oAluCtrl = BNE;
+                rAluCtrl = BNE;
 
             if(iFunct3 == 3'b100)
-                oAluCtrl = BLT;
+                rAluCtrl = BLT;
 
             if(iFunct3 == 3'b101)
-                oAluCtrl = BGE;
+                rAluCtrl = BGE;
 
             if(iFunct3 == 3'b110)
-                oAluCtrl = BLTU;
+                rAluCtrl = BLTU;
 
             if(iFunct3 == 3'b111)
-                oAluCtrl = BGEU;
+                rAluCtrl = BGEU;
         end
 
         3'b010: // R-TYPE INSTRUCTIONS
         begin
             if(iFunct3 == 3'd0 && iFunct7 == 7'd0)
-                oAluCtrl = ADD;
+                rAluCtrl = ADD;
 
             if(iFunct3 == 3'd0 && iFunct7 == 7'b0100000)
-                oAluCtrl = SUB;
+                rAluCtrl = SUB;
 
             if(iFunct3 == 3'b001 && iFunct7 == 7'd0)
-                oAluCtrl = SLL;
+                rAluCtrl = SLL;
 
-            if(iFunct3 == 3'd010 && iFunct7 == 7'd0)
-                oAluCtrl = SLT;
+            if(iFunct3 == 3'b010 && iFunct7 == 7'd0)
+                rAluCtrl = SLT;
 
-            if(iFunct3 == 3'b001 && iFunct7 = 7'd0)
-                oAluCtrl = SLTU;
+            if(iFunct3 == 3'b011 && iFunct7 == 7'd0)
+                rAluCtrl = SLTU;
 
             if(iFunct3 == 3'b100 && iFunct7 == 7'd0)
-                oAluCtrl = XOR;
+                rAluCtrl = XOR;
 
             if(iFunct3 == 3'b101 && iFunct7 == 7'd0)
-                oAluCtrl = SRL;
+                rAluCtrl = SRL;
 
-            if(iFunct3 == 3'b101 && iFunct7 == 7'd0100000)
-                oAluCtrl = SRA;
+            if(iFunct3 == 3'b101 && iFunct7 == 7'b0100000)
+                rAluCtrl = SRA;
 
-            if(iFunct3 == 3'd110 && iFunct7 == 7'd0)
-                oAluCtrl = OR;
+            if(iFunct3 == 3'b110 && iFunct7 == 7'd0)
+                rAluCtrl = OR;
 
             if(iFunct3 == 3'b111 && iFunct7 == 7'd0)
-                oAluCtrl = AND;
+                rAluCtrl = AND;
 
         end
 
         3'b011: // I-TYPE INSTRUCTIONS
         begin
             if(iFunct3 == 3'd0)
-                oAluCtrl = ADD;
+                rAluCtrl = ADD;
 
             if(iFunct3 == 3'b001 && iFunct7 == 7'd0)
-                oAluCtrl = SLL;
+                rAluCtrl = SLL;
 
             if(iFunct3 == 3'b010)
-                oAluCtrl = SLT;
+                rAluCtrl = SLT;
 
             if(iFunct3 == 3'b011)
-                oAluCtrl = SLTU;
+                rAluCtrl = SLTU;
 
             if(iFunct3 == 3'b100)
-                oAluCtrl = XOR;
+                rAluCtrl = XOR;
 
             if(iFunct3 == 3'b101 && iFunct7 == 7'd0)
-                oAluCtrl = SRL;
+                rAluCtrl = SRL;
 
             if(iFunct3 == 3'b101 && iFunct7 == 7'b0100000)
-                oAluCtrl = SRA;
+                rAluCtrl = SRA;
 
             if(iFunct3 == 3'b110)
-                oAluCtrl = OR;
+                rAluCtrl = OR;
 
             if(iFunct3 == 3'b111)
-                oAluCtrl = AND;
+                rAluCtrl = AND;
         end
 
 
