@@ -1,3 +1,4 @@
+// Submit for phase 5
 /* verilator lint_off DECLFILENAME */
 // /*
 //     Comparator module compares input and output
@@ -5,7 +6,7 @@
 //     If A = B -> oData[1] = 1
 //     If A < B -> oData[2] = 1
 // */
-module comparator (
+module Comparator (
     input [31:0] iDataA,
     input [31:0] iDataB,
     output [2:0] oData

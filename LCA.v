@@ -1,3 +1,4 @@
+// Submit for phase 5
 // 32-bit Lookahead Carry Adder
 module LCA (
     input [31:0] iDataA,

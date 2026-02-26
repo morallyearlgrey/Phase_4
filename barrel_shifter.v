@@ -63,7 +63,7 @@ module rl1_32(input wire [31:0] i, input wire [1:0] op, input wire fill, output 
 endmodule
 
 module rl2_32(input wire [31:0] i, input wire [1:0] op, input wire fill, output wire [31:0] o);
-  
+
   mux4 m0  ({1'b0, i[2], i[30], i[2]}, op, o[0]);
   mux4 m1  ({1'b0, i[3], i[31], i[3]}, op, o[1]);
 
@@ -208,253 +208,253 @@ module rl16_32(input wire [31:0] i, input wire [1:0] op, input wire fill, output
 endmodule
 
 module bitshift_stage_manual(
-    input wire [31:0] i, 
-    input wire s, 
-    input wire [1:0] op, 
-    input wire fill, 
+    input wire [31:0] i,
+    input wire s,
+    input wire [1:0] op,
+    input wire fill,
     output wire [31:0] o
-);
-    wire [31:0] t;
-    rl1_32 r (i, op, fill, t); 
+  );
+  wire [31:0] t;
+  rl1_32 r (i, op, fill, t);
 
-    // mux to identify if to shift that bit or pass
-    // Stage Selection Muxes: if s=0, o=i; if s=1, o=t
-    mux2 m00(i[0],  t[0],  s, o[0]);
-    mux2 m01(i[1],  t[1],  s, o[1]);
-    mux2 m02(i[2],  t[2],  s, o[2]);
-    mux2 m03(i[3],  t[3],  s, o[3]);
-    mux2 m04(i[4],  t[4],  s, o[4]);
-    mux2 m05(i[5],  t[5],  s, o[5]);
-    mux2 m06(i[6],  t[6],  s, o[6]);
-    mux2 m07(i[7],  t[7],  s, o[7]);
-    mux2 m08(i[8],  t[8],  s, o[8]);
-    mux2 m09(i[9],  t[9],  s, o[9]);
-    mux2 m10(i[10], t[10], s, o[10]);
-    mux2 m11(i[11], t[11], s, o[11]);
-    mux2 m12(i[12], t[12], s, o[12]);
-    mux2 m13(i[13], t[13], s, o[13]);
-    mux2 m14(i[14], t[14], s, o[14]);
-    mux2 m15(i[15], t[15], s, o[15]);
-    mux2 m16(i[16], t[16], s, o[16]);
-    mux2 m17(i[17], t[17], s, o[17]);
-    mux2 m18(i[18], t[18], s, o[18]);
-    mux2 m19(i[19], t[19], s, o[19]);
-    mux2 m20(i[20], t[20], s, o[20]);
-    mux2 m21(i[21], t[21], s, o[21]);
-    mux2 m22(i[22], t[22], s, o[22]);
-    mux2 m23(i[23], t[23], s, o[23]);
-    mux2 m24(i[24], t[24], s, o[24]);
-    mux2 m25(i[25], t[25], s, o[25]);
-    mux2 m26(i[26], t[26], s, o[26]);
-    mux2 m27(i[27], t[27], s, o[27]);
-    mux2 m28(i[28], t[28], s, o[28]);
-    mux2 m29(i[29], t[29], s, o[29]);
-    mux2 m30(i[30], t[30], s, o[30]);
-    mux2 m31(i[31], t[31], s, o[31]);
+  // mux to identify if to shift that bit or pass
+  // Stage Selection Muxes: if s=0, o=i; if s=1, o=t
+  mux2 m00(i[0],  t[0],  s, o[0]);
+  mux2 m01(i[1],  t[1],  s, o[1]);
+  mux2 m02(i[2],  t[2],  s, o[2]);
+  mux2 m03(i[3],  t[3],  s, o[3]);
+  mux2 m04(i[4],  t[4],  s, o[4]);
+  mux2 m05(i[5],  t[5],  s, o[5]);
+  mux2 m06(i[6],  t[6],  s, o[6]);
+  mux2 m07(i[7],  t[7],  s, o[7]);
+  mux2 m08(i[8],  t[8],  s, o[8]);
+  mux2 m09(i[9],  t[9],  s, o[9]);
+  mux2 m10(i[10], t[10], s, o[10]);
+  mux2 m11(i[11], t[11], s, o[11]);
+  mux2 m12(i[12], t[12], s, o[12]);
+  mux2 m13(i[13], t[13], s, o[13]);
+  mux2 m14(i[14], t[14], s, o[14]);
+  mux2 m15(i[15], t[15], s, o[15]);
+  mux2 m16(i[16], t[16], s, o[16]);
+  mux2 m17(i[17], t[17], s, o[17]);
+  mux2 m18(i[18], t[18], s, o[18]);
+  mux2 m19(i[19], t[19], s, o[19]);
+  mux2 m20(i[20], t[20], s, o[20]);
+  mux2 m21(i[21], t[21], s, o[21]);
+  mux2 m22(i[22], t[22], s, o[22]);
+  mux2 m23(i[23], t[23], s, o[23]);
+  mux2 m24(i[24], t[24], s, o[24]);
+  mux2 m25(i[25], t[25], s, o[25]);
+  mux2 m26(i[26], t[26], s, o[26]);
+  mux2 m27(i[27], t[27], s, o[27]);
+  mux2 m28(i[28], t[28], s, o[28]);
+  mux2 m29(i[29], t[29], s, o[29]);
+  mux2 m30(i[30], t[30], s, o[30]);
+  mux2 m31(i[31], t[31], s, o[31]);
 endmodule
 
 module bitshift_stage_manual2(
-    input wire [31:0] i, 
-    input wire s, 
-    input wire [1:0] op, 
-    input wire fill, 
+    input wire [31:0] i,
+    input wire s,
+    input wire [1:0] op,
+    input wire fill,
     output wire [31:0] o
-);
-    wire [31:0] t;
-    rl2_32 r (i, op, fill, t); 
+  );
+  wire [31:0] t;
+  rl2_32 r (i, op, fill, t);
 
-    // mux to identify if to shift that bit or pass
-    // Stage Selection Muxes: if s=0, o=i; if s=1, o=t
-    mux2 m00(i[0],  t[0],  s, o[0]);
-    mux2 m01(i[1],  t[1],  s, o[1]);
-    mux2 m02(i[2],  t[2],  s, o[2]);
-    mux2 m03(i[3],  t[3],  s, o[3]);
-    mux2 m04(i[4],  t[4],  s, o[4]);
-    mux2 m05(i[5],  t[5],  s, o[5]);
-    mux2 m06(i[6],  t[6],  s, o[6]);
-    mux2 m07(i[7],  t[7],  s, o[7]);
-    mux2 m08(i[8],  t[8],  s, o[8]);
-    mux2 m09(i[9],  t[9],  s, o[9]);
-    mux2 m10(i[10], t[10], s, o[10]);
-    mux2 m11(i[11], t[11], s, o[11]);
-    mux2 m12(i[12], t[12], s, o[12]);
-    mux2 m13(i[13], t[13], s, o[13]);
-    mux2 m14(i[14], t[14], s, o[14]);
-    mux2 m15(i[15], t[15], s, o[15]);
-    mux2 m16(i[16], t[16], s, o[16]);
-    mux2 m17(i[17], t[17], s, o[17]);
-    mux2 m18(i[18], t[18], s, o[18]);
-    mux2 m19(i[19], t[19], s, o[19]);
-    mux2 m20(i[20], t[20], s, o[20]);
-    mux2 m21(i[21], t[21], s, o[21]);
-    mux2 m22(i[22], t[22], s, o[22]);
-    mux2 m23(i[23], t[23], s, o[23]);
-    mux2 m24(i[24], t[24], s, o[24]);
-    mux2 m25(i[25], t[25], s, o[25]);
-    mux2 m26(i[26], t[26], s, o[26]);
-    mux2 m27(i[27], t[27], s, o[27]);
-    mux2 m28(i[28], t[28], s, o[28]);
-    mux2 m29(i[29], t[29], s, o[29]);
-    mux2 m30(i[30], t[30], s, o[30]);
-    mux2 m31(i[31], t[31], s, o[31]);
+  // mux to identify if to shift that bit or pass
+  // Stage Selection Muxes: if s=0, o=i; if s=1, o=t
+  mux2 m00(i[0],  t[0],  s, o[0]);
+  mux2 m01(i[1],  t[1],  s, o[1]);
+  mux2 m02(i[2],  t[2],  s, o[2]);
+  mux2 m03(i[3],  t[3],  s, o[3]);
+  mux2 m04(i[4],  t[4],  s, o[4]);
+  mux2 m05(i[5],  t[5],  s, o[5]);
+  mux2 m06(i[6],  t[6],  s, o[6]);
+  mux2 m07(i[7],  t[7],  s, o[7]);
+  mux2 m08(i[8],  t[8],  s, o[8]);
+  mux2 m09(i[9],  t[9],  s, o[9]);
+  mux2 m10(i[10], t[10], s, o[10]);
+  mux2 m11(i[11], t[11], s, o[11]);
+  mux2 m12(i[12], t[12], s, o[12]);
+  mux2 m13(i[13], t[13], s, o[13]);
+  mux2 m14(i[14], t[14], s, o[14]);
+  mux2 m15(i[15], t[15], s, o[15]);
+  mux2 m16(i[16], t[16], s, o[16]);
+  mux2 m17(i[17], t[17], s, o[17]);
+  mux2 m18(i[18], t[18], s, o[18]);
+  mux2 m19(i[19], t[19], s, o[19]);
+  mux2 m20(i[20], t[20], s, o[20]);
+  mux2 m21(i[21], t[21], s, o[21]);
+  mux2 m22(i[22], t[22], s, o[22]);
+  mux2 m23(i[23], t[23], s, o[23]);
+  mux2 m24(i[24], t[24], s, o[24]);
+  mux2 m25(i[25], t[25], s, o[25]);
+  mux2 m26(i[26], t[26], s, o[26]);
+  mux2 m27(i[27], t[27], s, o[27]);
+  mux2 m28(i[28], t[28], s, o[28]);
+  mux2 m29(i[29], t[29], s, o[29]);
+  mux2 m30(i[30], t[30], s, o[30]);
+  mux2 m31(i[31], t[31], s, o[31]);
 endmodule
 
 module bitshift_stage_manual4(
-    input wire [31:0] i, 
-    input wire s, 
-    input wire [1:0] op, 
-    input wire fill, 
+    input wire [31:0] i,
+    input wire s,
+    input wire [1:0] op,
+    input wire fill,
     output wire [31:0] o
-);
-    wire [31:0] t;
-    rl4_32 r (i, op, fill, t); 
+  );
+  wire [31:0] t;
+  rl4_32 r (i, op, fill, t);
 
-    // mux to identify if to shift that bit or pass
-    // Stage Selection Muxes: if s=0, o=i; if s=1, o=t
-    mux2 m00(i[0],  t[0],  s, o[0]);
-    mux2 m01(i[1],  t[1],  s, o[1]);
-    mux2 m02(i[2],  t[2],  s, o[2]);
-    mux2 m03(i[3],  t[3],  s, o[3]);
-    mux2 m04(i[4],  t[4],  s, o[4]);
-    mux2 m05(i[5],  t[5],  s, o[5]);
-    mux2 m06(i[6],  t[6],  s, o[6]);
-    mux2 m07(i[7],  t[7],  s, o[7]);
-    mux2 m08(i[8],  t[8],  s, o[8]);
-    mux2 m09(i[9],  t[9],  s, o[9]);
-    mux2 m10(i[10], t[10], s, o[10]);
-    mux2 m11(i[11], t[11], s, o[11]);
-    mux2 m12(i[12], t[12], s, o[12]);
-    mux2 m13(i[13], t[13], s, o[13]);
-    mux2 m14(i[14], t[14], s, o[14]);
-    mux2 m15(i[15], t[15], s, o[15]);
-    mux2 m16(i[16], t[16], s, o[16]);
-    mux2 m17(i[17], t[17], s, o[17]);
-    mux2 m18(i[18], t[18], s, o[18]);
-    mux2 m19(i[19], t[19], s, o[19]);
-    mux2 m20(i[20], t[20], s, o[20]);
-    mux2 m21(i[21], t[21], s, o[21]);
-    mux2 m22(i[22], t[22], s, o[22]);
-    mux2 m23(i[23], t[23], s, o[23]);
-    mux2 m24(i[24], t[24], s, o[24]);
-    mux2 m25(i[25], t[25], s, o[25]);
-    mux2 m26(i[26], t[26], s, o[26]);
-    mux2 m27(i[27], t[27], s, o[27]);
-    mux2 m28(i[28], t[28], s, o[28]);
-    mux2 m29(i[29], t[29], s, o[29]);
-    mux2 m30(i[30], t[30], s, o[30]);
-    mux2 m31(i[31], t[31], s, o[31]);
+  // mux to identify if to shift that bit or pass
+  // Stage Selection Muxes: if s=0, o=i; if s=1, o=t
+  mux2 m00(i[0],  t[0],  s, o[0]);
+  mux2 m01(i[1],  t[1],  s, o[1]);
+  mux2 m02(i[2],  t[2],  s, o[2]);
+  mux2 m03(i[3],  t[3],  s, o[3]);
+  mux2 m04(i[4],  t[4],  s, o[4]);
+  mux2 m05(i[5],  t[5],  s, o[5]);
+  mux2 m06(i[6],  t[6],  s, o[6]);
+  mux2 m07(i[7],  t[7],  s, o[7]);
+  mux2 m08(i[8],  t[8],  s, o[8]);
+  mux2 m09(i[9],  t[9],  s, o[9]);
+  mux2 m10(i[10], t[10], s, o[10]);
+  mux2 m11(i[11], t[11], s, o[11]);
+  mux2 m12(i[12], t[12], s, o[12]);
+  mux2 m13(i[13], t[13], s, o[13]);
+  mux2 m14(i[14], t[14], s, o[14]);
+  mux2 m15(i[15], t[15], s, o[15]);
+  mux2 m16(i[16], t[16], s, o[16]);
+  mux2 m17(i[17], t[17], s, o[17]);
+  mux2 m18(i[18], t[18], s, o[18]);
+  mux2 m19(i[19], t[19], s, o[19]);
+  mux2 m20(i[20], t[20], s, o[20]);
+  mux2 m21(i[21], t[21], s, o[21]);
+  mux2 m22(i[22], t[22], s, o[22]);
+  mux2 m23(i[23], t[23], s, o[23]);
+  mux2 m24(i[24], t[24], s, o[24]);
+  mux2 m25(i[25], t[25], s, o[25]);
+  mux2 m26(i[26], t[26], s, o[26]);
+  mux2 m27(i[27], t[27], s, o[27]);
+  mux2 m28(i[28], t[28], s, o[28]);
+  mux2 m29(i[29], t[29], s, o[29]);
+  mux2 m30(i[30], t[30], s, o[30]);
+  mux2 m31(i[31], t[31], s, o[31]);
 endmodule
 
 module bitshift_stage_manual8(
-    input wire [31:0] i, 
-    input wire s, 
-    input wire [1:0] op, 
-    input wire fill, 
+    input wire [31:0] i,
+    input wire s,
+    input wire [1:0] op,
+    input wire fill,
     output wire [31:0] o
-);
-    wire [31:0] t;
-    rl8_32 r (i, op, fill, t);
+  );
+  wire [31:0] t;
+  rl8_32 r (i, op, fill, t);
 
-    // mux to identify if to shift that bit or pass
-    // Stage Selection Muxes: if s=0, o=i; if s=1, o=t
-    mux2 m00(i[0],  t[0],  s, o[0]);
-    mux2 m01(i[1],  t[1],  s, o[1]);
-    mux2 m02(i[2],  t[2],  s, o[2]);
-    mux2 m03(i[3],  t[3],  s, o[3]);
-    mux2 m04(i[4],  t[4],  s, o[4]);
-    mux2 m05(i[5],  t[5],  s, o[5]);
-    mux2 m06(i[6],  t[6],  s, o[6]);
-    mux2 m07(i[7],  t[7],  s, o[7]);
-    mux2 m08(i[8],  t[8],  s, o[8]);
-    mux2 m09(i[9],  t[9],  s, o[9]);
-    mux2 m10(i[10], t[10], s, o[10]);
-    mux2 m11(i[11], t[11], s, o[11]);
-    mux2 m12(i[12], t[12], s, o[12]);
-    mux2 m13(i[13], t[13], s, o[13]);
-    mux2 m14(i[14], t[14], s, o[14]);
-    mux2 m15(i[15], t[15], s, o[15]);
-    mux2 m16(i[16], t[16], s, o[16]);
-    mux2 m17(i[17], t[17], s, o[17]);
-    mux2 m18(i[18], t[18], s, o[18]);
-    mux2 m19(i[19], t[19], s, o[19]);
-    mux2 m20(i[20], t[20], s, o[20]);
-    mux2 m21(i[21], t[21], s, o[21]);
-    mux2 m22(i[22], t[22], s, o[22]);
-    mux2 m23(i[23], t[23], s, o[23]);
-    mux2 m24(i[24], t[24], s, o[24]);
-    mux2 m25(i[25], t[25], s, o[25]);
-    mux2 m26(i[26], t[26], s, o[26]);
-    mux2 m27(i[27], t[27], s, o[27]);
-    mux2 m28(i[28], t[28], s, o[28]);
-    mux2 m29(i[29], t[29], s, o[29]);
-    mux2 m30(i[30], t[30], s, o[30]);
-    mux2 m31(i[31], t[31], s, o[31]);
+  // mux to identify if to shift that bit or pass
+  // Stage Selection Muxes: if s=0, o=i; if s=1, o=t
+  mux2 m00(i[0],  t[0],  s, o[0]);
+  mux2 m01(i[1],  t[1],  s, o[1]);
+  mux2 m02(i[2],  t[2],  s, o[2]);
+  mux2 m03(i[3],  t[3],  s, o[3]);
+  mux2 m04(i[4],  t[4],  s, o[4]);
+  mux2 m05(i[5],  t[5],  s, o[5]);
+  mux2 m06(i[6],  t[6],  s, o[6]);
+  mux2 m07(i[7],  t[7],  s, o[7]);
+  mux2 m08(i[8],  t[8],  s, o[8]);
+  mux2 m09(i[9],  t[9],  s, o[9]);
+  mux2 m10(i[10], t[10], s, o[10]);
+  mux2 m11(i[11], t[11], s, o[11]);
+  mux2 m12(i[12], t[12], s, o[12]);
+  mux2 m13(i[13], t[13], s, o[13]);
+  mux2 m14(i[14], t[14], s, o[14]);
+  mux2 m15(i[15], t[15], s, o[15]);
+  mux2 m16(i[16], t[16], s, o[16]);
+  mux2 m17(i[17], t[17], s, o[17]);
+  mux2 m18(i[18], t[18], s, o[18]);
+  mux2 m19(i[19], t[19], s, o[19]);
+  mux2 m20(i[20], t[20], s, o[20]);
+  mux2 m21(i[21], t[21], s, o[21]);
+  mux2 m22(i[22], t[22], s, o[22]);
+  mux2 m23(i[23], t[23], s, o[23]);
+  mux2 m24(i[24], t[24], s, o[24]);
+  mux2 m25(i[25], t[25], s, o[25]);
+  mux2 m26(i[26], t[26], s, o[26]);
+  mux2 m27(i[27], t[27], s, o[27]);
+  mux2 m28(i[28], t[28], s, o[28]);
+  mux2 m29(i[29], t[29], s, o[29]);
+  mux2 m30(i[30], t[30], s, o[30]);
+  mux2 m31(i[31], t[31], s, o[31]);
 endmodule
 
 module bitshift_stage_manual16 (
-    input wire [31:0] i, 
-    input wire s, 
-    input wire [1:0] op, 
-    input wire fill, 
+    input wire [31:0] i,
+    input wire s,
+    input wire [1:0] op,
+    input wire fill,
     output wire [31:0] o
-);
-    wire [31:0] t;
-    rl16_32 r (i, op, fill, t); 
+  );
+  wire [31:0] t;
+  rl16_32 r (i, op, fill, t);
 
-    // mux to identify if to shift that bit or pass
-    // Stage Selection Muxes: if s=0, o=i; if s=1, o=t
-    mux2 m00(i[0],  t[0],  s, o[0]);
-    mux2 m01(i[1],  t[1],  s, o[1]);
-    mux2 m02(i[2],  t[2],  s, o[2]);
-    mux2 m03(i[3],  t[3],  s, o[3]);
-    mux2 m04(i[4],  t[4],  s, o[4]);
-    mux2 m05(i[5],  t[5],  s, o[5]);
-    mux2 m06(i[6],  t[6],  s, o[6]);
-    mux2 m07(i[7],  t[7],  s, o[7]);
-    mux2 m08(i[8],  t[8],  s, o[8]);
-    mux2 m09(i[9],  t[9],  s, o[9]);
-    mux2 m10(i[10], t[10], s, o[10]);
-    mux2 m11(i[11], t[11], s, o[11]);
-    mux2 m12(i[12], t[12], s, o[12]);
-    mux2 m13(i[13], t[13], s, o[13]);
-    mux2 m14(i[14], t[14], s, o[14]);
-    mux2 m15(i[15], t[15], s, o[15]);
-    mux2 m16(i[16], t[16], s, o[16]);
-    mux2 m17(i[17], t[17], s, o[17]);
-    mux2 m18(i[18], t[18], s, o[18]);
-    mux2 m19(i[19], t[19], s, o[19]);
-    mux2 m20(i[20], t[20], s, o[20]);
-    mux2 m21(i[21], t[21], s, o[21]);
-    mux2 m22(i[22], t[22], s, o[22]);
-    mux2 m23(i[23], t[23], s, o[23]);
-    mux2 m24(i[24], t[24], s, o[24]);
-    mux2 m25(i[25], t[25], s, o[25]);
-    mux2 m26(i[26], t[26], s, o[26]);
-    mux2 m27(i[27], t[27], s, o[27]);
-    mux2 m28(i[28], t[28], s, o[28]);
-    mux2 m29(i[29], t[29], s, o[29]);
-    mux2 m30(i[30], t[30], s, o[30]);
-    mux2 m31(i[31], t[31], s, o[31]);
+  // mux to identify if to shift that bit or pass
+  // Stage Selection Muxes: if s=0, o=i; if s=1, o=t
+  mux2 m00(i[0],  t[0],  s, o[0]);
+  mux2 m01(i[1],  t[1],  s, o[1]);
+  mux2 m02(i[2],  t[2],  s, o[2]);
+  mux2 m03(i[3],  t[3],  s, o[3]);
+  mux2 m04(i[4],  t[4],  s, o[4]);
+  mux2 m05(i[5],  t[5],  s, o[5]);
+  mux2 m06(i[6],  t[6],  s, o[6]);
+  mux2 m07(i[7],  t[7],  s, o[7]);
+  mux2 m08(i[8],  t[8],  s, o[8]);
+  mux2 m09(i[9],  t[9],  s, o[9]);
+  mux2 m10(i[10], t[10], s, o[10]);
+  mux2 m11(i[11], t[11], s, o[11]);
+  mux2 m12(i[12], t[12], s, o[12]);
+  mux2 m13(i[13], t[13], s, o[13]);
+  mux2 m14(i[14], t[14], s, o[14]);
+  mux2 m15(i[15], t[15], s, o[15]);
+  mux2 m16(i[16], t[16], s, o[16]);
+  mux2 m17(i[17], t[17], s, o[17]);
+  mux2 m18(i[18], t[18], s, o[18]);
+  mux2 m19(i[19], t[19], s, o[19]);
+  mux2 m20(i[20], t[20], s, o[20]);
+  mux2 m21(i[21], t[21], s, o[21]);
+  mux2 m22(i[22], t[22], s, o[22]);
+  mux2 m23(i[23], t[23], s, o[23]);
+  mux2 m24(i[24], t[24], s, o[24]);
+  mux2 m25(i[25], t[25], s, o[25]);
+  mux2 m26(i[26], t[26], s, o[26]);
+  mux2 m27(i[27], t[27], s, o[27]);
+  mux2 m28(i[28], t[28], s, o[28]);
+  mux2 m29(i[29], t[29], s, o[29]);
+  mux2 m30(i[30], t[30], s, o[30]);
+  mux2 m31(i[31], t[31], s, o[31]);
 endmodule
 
 module barrelshifter32(
     input  wire [31:0] i,
     input  wire [31:0] s,      // We use s[4:0]
     input  wire [2:0]  func3,  // Mapping: func3[2] can act as op[0] (direction)
-    input  wire        is_sra, 
+    input  wire        is_sra,
     output wire [31:0] o
-);
-    wire [31:0] t16, t8, t4, t2;
-    wire [1:0] op = {1'b0, func3[2]}; // Simplistic op mapping for SLL/SRL
-    wire fill = is_sra ? i[31] : 1'b0;
+  );
+  wire [31:0] t16, t8, t4, t2;
+  wire [1:0] op = {1'b0, func3[2]}; // Simplistic op mapping for SLL/SRL
+  wire fill = is_sra ? i[31] : 1'b0;
 
-    // The stages must be instantiated manually
-    // Stage 16 -> 8 -> 4 -> 2 -> 1
-    // (Each bitshift_stage_manual would contain the unique rlX module)
-    bitshift_stage_manual16 b16 (i,   s[4], op, fill, t16);
-    bitshift_stage_manual8 b8  (t16, s[3], op, fill, t8);
-    bitshift_stage_manual4 b4  (t8,  s[2], op, fill, t4);
-    bitshift_stage_manual2 b2  (t4,  s[1], op, fill, t2);
-    bitshift_stage_manual b1  (t2,  s[0], op, fill, o);
+  // The stages must be instantiated manually
+  // Stage 16 -> 8 -> 4 -> 2 -> 1
+  // (Each bitshift_stage_manual would contain the unique rlX module)
+  bitshift_stage_manual16 b16 (i,   s[4], op, fill, t16);
+  bitshift_stage_manual8 b8  (t16, s[3], op, fill, t8);
+  bitshift_stage_manual4 b4  (t8,  s[2], op, fill, t4);
+  bitshift_stage_manual2 b2  (t4,  s[1], op, fill, t2);
+  bitshift_stage_manual b1  (t2,  s[0], op, fill, o);
 
 endmodule

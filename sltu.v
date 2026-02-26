@@ -1,3 +1,4 @@
+// Submit for phase 5
 /* verilator lint_off DECLFILENAME */
 // /*
 //     Module for the Set Less than Unisigned instruction
@@ -15,7 +16,7 @@ module setLessThanUnsigned (
   wire [2:0] iSet; // wire for A and B relationship
   /* verilator lint_on UNUSED */
 
-  comparator SLTUcomp(
+  Comparator SLTUcomp(
                .iDataA(iDataA),
                .iDataB(iDataB),
                .oData(iSet)
