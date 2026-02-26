@@ -6,7 +6,7 @@
 //     If A = B -> oData[1] = 1
 //     If A < B -> oData[2] = 1
 // */
-module Comparator (
+module comparator (
     input [31:0] iDataA,
     input [31:0] iDataB,
     output [2:0] oData

@@ -11,7 +11,7 @@ module DATA_MEMORY (
     output reg [31:0] oReadData
   );
 
-  reg [7:0] memory [0:1999]; // 8 bits=500 words
+  reg [7:0] rDataMem [0:1999]; // 8 bits=500 words
   // read logic
   // combinational logic, determined by current input without past inputs
   always @(*)
@@ -21,23 +21,23 @@ module DATA_MEMORY (
       case (iFunct3) // changes oreaddata depending on funct3
         // load byte, signextend
         3'b000:
-          oReadData = {{24{memory[iAddress+0][7]}}, memory[iAddress+0]};
+          oReadData = {{24{rDataMem[iAddress+0][7]}}, rDataMem[iAddress+0]};
 
         // load halfword, signextend
         3'b001:
-          oReadData = {{16{memory[iAddress+1][7]}}, memory[iAddress+1], memory[iAddress+0]};
+          oReadData = {{16{rDataMem[iAddress+1][7]}}, rDataMem[iAddress+1], rDataMem[iAddress+0]};
 
         // load word
         3'b010:
-          oReadData = {memory[iAddress+3], memory[iAddress+2], memory[iAddress+1], memory[iAddress+0]};
+          oReadData = {rDataMem[iAddress+3], rDataMem[iAddress+2], rDataMem[iAddress+1], rDataMem[iAddress+0]};
 
         // load byte unsigned, zeroextend
         3'b100:
-          oReadData = {24'b0, memory[iAddress]};
+          oReadData = {24'b0, rDataMem[iAddress]};
 
         // load halfword unsigned, zeroextend
         3'b101:
-          oReadData = {16'b0, memory[iAddress+1], memory[iAddress+0]};
+          oReadData = {16'b0, rDataMem[iAddress+1], rDataMem[iAddress+0]};
 
         default:
           oReadData = 32'b0;
@@ -61,28 +61,36 @@ module DATA_MEMORY (
       case (iFunct3)
         // store byte
         3'b000:
-          memory[iAddress+0] = iWriteData[7:0];
+          rDataMem[iAddress+0] = iWriteData[7:0];
 
         // store half-word
         3'b001:
         begin
-          memory[iAddress+0] = iWriteData[7:0];
-          memory[iAddress+1] = iWriteData[15:8];
+          rDataMem[iAddress+0] = iWriteData[7:0];
+          rDataMem[iAddress+1] = iWriteData[15:8];
         end
 
         // store word
         3'b010:
         begin
-          memory[iAddress+0] = iWriteData[7:0];
-          memory[iAddress+1] = iWriteData[15:8];
-          memory[iAddress+2] = iWriteData[23:16];
-          memory[iAddress+3] = iWriteData[31:24];
+          rDataMem[iAddress+0] = iWriteData[7:0];
+          rDataMem[iAddress+1] = iWriteData[15:8];
+          rDataMem[iAddress+2] = iWriteData[23:16];
+          rDataMem[iAddress+3] = iWriteData[31:24];
         end
+
+        default:
+          ;
 
       endcase
 
     end
 
+  end
+
+  initial
+  begin
+    $readmemh("data.txt", rDataMem);
   end
 
 endmodule

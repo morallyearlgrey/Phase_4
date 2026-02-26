@@ -1,4 +1,5 @@
-// /* verilator lint_off DECLFILENAME */
+/* verilator lint_off DECLFILENAME */
+/* verilator lint_off LITENDIAN */
 // // /*
 // //     Implements barrel shifter
 // //     Allows for shifting left, right, and shift left arithmetic
@@ -437,7 +438,7 @@ module bitshift_stage_manual16 (
   mux2 m31(i[31], t[31], s, o[31]);
 endmodule
 
-module barrelshifter32(
+module barrel_shifter(
     input  wire [31:0] i,
     input  wire [31:0] s,      // We use s[4:0]
     input  wire [2:0]  func3,  // Mapping: func3[2] can act as op[0] (direction)

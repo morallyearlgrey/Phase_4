@@ -7,7 +7,7 @@
 //     Outputs oData, either 1 or 0
 //         1 if A < B, 0 otherwise
 // */
-module setLessThanUnsigned (
+module sltu (
     input [31:0] iDataA,
     input [31:0] iDataB,
     output [31:0] oData
@@ -16,7 +16,7 @@ module setLessThanUnsigned (
   wire [2:0] iSet; // wire for A and B relationship
   /* verilator lint_on UNUSED */
 
-  Comparator SLTUcomp(
+  comparator SLTUcomp(
                .iDataA(iDataA),
                .iDataB(iDataB),
                .oData(iSet)

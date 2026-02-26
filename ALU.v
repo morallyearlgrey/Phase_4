@@ -101,13 +101,13 @@ module ALU (
 
   // implements barrel shifter
   // shifts data A by data B
-  barrelshifter32 shifting (
-                    .i(iDataA),
-                    .s(shamt),
-                    .func3(derived_funct3),
-                    .is_sra(is_sra),
-                    .o(shiftedRes)
-                  );
+  barrel_shifter shifting (
+                   .i(iDataA),
+                   .s(shamt),
+                   .func3(derived_funct3),
+                   .is_sra(is_sra),
+                   .o(shiftedRes)
+                 );
 
   // --- SLT MODULE ---
   wire [31:0] slt_res;
@@ -119,11 +119,11 @@ module ALU (
 
   // --- SLTU MODULE ---
   wire [31:0] sltu_res;
-  setLessThanUnsigned SLTUmod(
-                        .iDataA(iDataA),
-                        .iDataB(iDataB),
-                        .oData(sltu_res)
-                      );
+  sltu SLTUmod(
+         .iDataA(iDataA),
+         .iDataB(iDataB),
+         .oData(sltu_res)
+       );
 
   // --- AND MODULE ---
   wire [31:0] wAnd;
@@ -152,7 +152,7 @@ module ALU (
   // --- BLTU MODULE ---
   wire [31:0] wBLTU;
   wire [2:0] wBLTU_output;
-  Comparator BLTUmod(
+  comparator BLTUmod(
                .iDataA(iDataA),
                .iDataB(iDataB),
                .oData(wBLTU_output)
@@ -162,7 +162,7 @@ module ALU (
   // --- BGEU MODULE ---
   wire [31:0] wBGEU;
   wire [2:0] wBGEU_output;
-  Comparator BGEUmod(
+  comparator BGEUmod(
                .iDataA(iDataA),
                .iDataB(iDataB),
                .oData(wBGEU_output)

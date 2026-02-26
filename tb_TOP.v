@@ -2,12 +2,12 @@
 
 module tb_TOP();
   reg iClk;
-  reg iRst;
+  reg iRstN;
 
-  TOP uut (
-        .iClk(iClk),
-        .iRst(iRst)
-      );
+  RISCV_TOP uut (
+              .iClk(iClk),
+              .iRstN(iRstN)
+            );
 
   // Clock generation
   initial
@@ -17,16 +17,16 @@ module tb_TOP();
   initial
   begin
     // Initialize
-    iRst = 1;
+    iRstN = 0; // Assert reset (active low)
     #20;
-    iRst = 0;
+    iRstN = 1; // Release reset
 
     $display("Time | PC       | Instr    | ALU Result | RD Data");
     $monitor("%4t | %h | %h | %h   | %h",
              $time, uut.wPC, uut.wInstr, uut.wAluResult, uut.wWriteData);
 
-    // Run for 100ns
-    #100;
+    // Run for 150ns to see all instructions in program.hex
+    #150;
     $finish;
   end
 endmodule
