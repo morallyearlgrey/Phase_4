@@ -148,25 +148,25 @@ module ALU (
         .iDataB(iDataB),
         .oData(wXor)
       );
-  
+
   // --- BLTU MODULE ---
   wire [31:0] wBLTU;
   wire [2:0] wBLTU_output;
-  comparator BLTUmod(
-    .iDataA(iDataA),
-    .iDataB(iDataB),
-    .oData(wBLTU_output)
-  );
+  Comparator BLTUmod(
+               .iDataA(iDataA),
+               .iDataB(iDataB),
+               .oData(wBLTU_output)
+             );
   assign wBLTU = (wBLTU_output == 3'b100) ? 32'd1 : 32'd0;
 
   // --- BGEU MODULE ---
   wire [31:0] wBGEU;
   wire [2:0] wBGEU_output;
-  comparator BGEUmod(
-    .iDataA(iDataA),
-    .iDataB(iDataB),
-    .oData(wBGEU_output)
-  );
+  Comparator BGEUmod(
+               .iDataA(iDataA),
+               .iDataB(iDataB),
+               .oData(wBGEU_output)
+             );
   assign wBGEU = (wBGEU_output == 3'b010 || wBGEU_output == 3'b001) ? 32'd1 : 32'd0;
 
 

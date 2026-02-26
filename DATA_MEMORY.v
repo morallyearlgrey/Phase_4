@@ -6,7 +6,6 @@ module DATA_MEMORY (
     input [31:0] iAddress,
     input [31:0] iWriteData,
     input [2:0] iFunct3, // selects width of the data; determines which read or store inst to do
-    input [2:0] iFunct3, // selects width of the data; determines which read or store inst to do
     input iMemWrite,
     input iMemRead,
     output reg [31:0] oReadData
@@ -19,11 +18,10 @@ module DATA_MEMORY (
   begin
     if(iMemRead == 1)
     begin
-      case iFunct3 // changes oreaddata depending on funct3
+      case (iFunct3) // changes oreaddata depending on funct3
         // load byte, signextend
         3'b000:
-          oReadData = {{24{memory[iAddress+0][7]}, memory[iAddress+0]}}
-          ;
+          oReadData = {{24{memory[iAddress+0][7]}}, memory[iAddress+0]};
 
         // load halfword, signextend
         3'b001:
@@ -63,19 +61,23 @@ module DATA_MEMORY (
       case (iFunct3)
         // store byte
         3'b000:
-          mem[iAddress+0] = iWriteData[7:0];
+          memory[iAddress+0] = iWriteData[7:0];
 
         // store half-word
         3'b001:
-          mem[iAddress+0] = iWriteData[7:0];
-        mem[iAddress+1] = iWriteData[15:8];
+        begin
+          memory[iAddress+0] = iWriteData[7:0];
+          memory[iAddress+1] = iWriteData[15:8];
+        end
 
         // store word
         3'b010:
-          mem[iAddress+0] = iWriteData[7:0];
-        mem[iAddress+1] = iWriteData[15:8];
-        mem[iAddress+2] = iWriteData[23:16];
-        mem[iAddress+3] = iWriteData[31:24];
+        begin
+          memory[iAddress+0] = iWriteData[7:0];
+          memory[iAddress+1] = iWriteData[15:8];
+          memory[iAddress+2] = iWriteData[23:16];
+          memory[iAddress+3] = iWriteData[31:24];
+        end
 
       endcase
 
