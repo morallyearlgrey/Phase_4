@@ -2,12 +2,12 @@
     The branch and jump unit are used to adjust the PC
     to go to different instruction address rather than just
     incrementing.
-
+ 
     Default PC + 4 (go to next instruction even if no branch/jump)
     
     The branch and jump unit then can select to use an offset,
     which will be used in place of incrementing.
-
+ 
         Branch & Jump: PC = base address + Offset
     
     Finally, the branch and jump unit can start with a different source address,
@@ -25,37 +25,36 @@ module BRANCH_JUMP (
     input [31:0] iRs1,      // reg source
     input iPcSrc,           // flag to determine if using reg or pc
     output [31:0] oPc       // pc output
-);
+  );
 
-wire branch;
-assign branch = 0;
-wire [31:0] base;
-wire [31:0] offset;
+  wire branch;
+  wire [31:0] base;
+  wire [31:0] offset;
 
-/* verilator lint_off UNUSED */
+  /* verilator lint_off UNUSED */
   wire oCout; // unused
   wire oZero; // unsused
-/* verilator lint_on UNUSED */
+  /* verilator lint_on UNUSED */
 
-// obtain branch flag
-assign branch = ((iBranch && iZero) || iJump) ? 1'b1 : 1'b0;
+  // obtain branch flag
+  assign branch = ((iBranch && iZero) || iJump) ? 1'b1 : 1'b0;
 
-// if branch taken, find the offset
-assign offset = (branch) ? iOffset : 32'd4;
+  // if branch taken, find the offset
+  assign offset = (branch) ? iOffset : 32'd4;
 
-// Find pc src and use it as base reg or base program counter
-assign base = (iPcSrc) ? iRs1 : iPc;
+  // Find pc src and use it as base reg or base program counter
+  assign base = (iPcSrc) ? iRs1 : iPc;
 
-// calculate the final output program counter
-// oPC = base address + offset
+  // calculate the final output program counter
+  // oPC = base address + offset
 
-LCA programCounter (
+  LCA programCounter (
         .iDataA(base),
         .iDataB(offset),
         .iCin(1'b0),
         .oData(oPc),
         .oCout(oCout),
         .oZero(oZero)
-    );
-    
+      );
+
 endmodule

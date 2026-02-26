@@ -82,7 +82,7 @@ module CONTROL (
       7'b1100011:
       begin
         rBranch   = 1;
-        rPcSrc    = 1;
+        rPcSrc    = 0; // Use PC as base
         rAluOp    = 3'b001;
       end
 
@@ -107,7 +107,7 @@ module CONTROL (
       begin
         rRegWrite = 1;
         rJump     = 1;
-        rPcSrc    = 1;
+        rPcSrc    = 0; // Use PC as base
         rAluSrc1  = 1;
         rAluSrc2  = 1;
       end
@@ -117,7 +117,7 @@ module CONTROL (
       begin
         rRegWrite = 1;
         rJump     = 1;
-        rPcSrc    = 1;
+        rPcSrc    = 1; // Use RS1 as base
         rAluSrc2  = 1;
       end
 

@@ -10,7 +10,7 @@ module RISCV_TOP (
   wire [6:0] wOpcode, wFunct7;
   wire [2:0] wFunct3;
   wire [4:0] wRd, wRs1, wRs2;
-  wire [31:0] wRs1Data, wRs2Data, wAluDataA, wAluDataB, wAluResult, wMemReadData, wWriteData, wMemToRegData;
+  wire [31:0] wRs1Data, wRs2Data, wAluDataA, wAluDataB, wAluResult, wMemReadData, wWriteData, wMemToRegData, wLuiMuxOut, wPCPlus4;
   wire [3:0] wAluCtrl;
   wire wAluZero;
 
@@ -134,6 +134,15 @@ module RISCV_TOP (
             .iData0(wMemToRegData),
             .iData1(wImm),
             .iSel(wLui),
+            .oData(wLuiMuxOut)
+          );
+
+  assign wPCPlus4 = wPC + 32'd4;
+
+  MUX_2_1 #(32) jump_writeback_mux (
+            .iData0(wLuiMuxOut),
+            .iData1(wPCPlus4),
+            .iSel(wJump),
             .oData(wWriteData)
           );
 

@@ -11,7 +11,7 @@ module DATA_MEMORY (
     output reg [31:0] oReadData
   );
 
-  reg [7:0] rDataMem [0:1999]; // 8 bits=500 words
+  reg [7:0] rDataMem [0:4095]; // 4KB data memory, byte-addressable
   // read logic
   // combinational logic, determined by current input without past inputs
   always @(*)
