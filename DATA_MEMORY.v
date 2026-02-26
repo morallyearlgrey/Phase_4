@@ -62,7 +62,7 @@ module DATA_MEMORY (
     end
 
     // write logic
-    // in phase 3 wasn't combinational, but no clock here so
+    // clock here now lol
     always @(posedge iClk) begin
         if (iMemWrite == 1) begin
             case (iFunct3)
