@@ -67,7 +67,7 @@ module ALU (
   // Prepare B input for subtraction (2's complement inversion)
   // Note: The +1 is handled by iCin
   // SUB, BEQ, BNE, BLT, BGE involve subtraction logic
-  wire is_sub = (iAluCtrl == SUB) || (iAluCtrl == BNE) || (iAluCtrl == BLT) || (iAluCtrl == BGE);
+  wire is_sub = (iAluCtrl == SUB) || (iAluCtrl == BEQ) || (iAluCtrl == BNE) || (iAluCtrl == BLT) || (iAluCtrl == BGE);
   wire [31:0] adder_b = is_sub ? ~iDataB : iDataB;  // If subtracting, perform bitwise inversion of iDataB to prepare for 2's complement addition
   wire [31:0] wSum;
   /* verilator lint_off UNUSED */
@@ -88,10 +88,7 @@ module ALU (
   // -- BARREL SHIFTER MODULE ---
   wire [31:0] shiftedRes; // result after shifting
   wire [31:0] shamt;
-
-  wire overflow; // detects if there is overflow
-  assign overflow =| iDataB[31:5]; // checks if higher than 32 bits
-  assign shamt = overflow ? 32'd31 : iDataB; // assigns the shamt
+  assign shamt = {27'b0, iDataB[4:0]}; // Use lower 5 bits for shift amount
 
   wire is_sra; // detects if doing arithmetic operation
   assign is_sra = (iAluCtrl == SRA);
