@@ -441,12 +441,12 @@ endmodule
 module barrel_shifter(
     input  wire [31:0] i,
     input  wire [31:0] s,      // We use s[4:0]
-    input  wire [2:0]  func3,  // Mapping: func3[2] can act as op[0] (direction)
+    input  wire        is_left_shift,
     input  wire        is_sra,
     output wire [31:0] o
   );
   wire [31:0] t16, t8, t4, t2;
-  wire [1:0] op = {1'b0, func3[2]}; // Simplistic op mapping for SLL/SRL
+  wire [1:0] op = is_left_shift ? 2'b00 : 2'b01;
   wire fill = is_sra ? i[31] : 1'b0;
 
   // The stages must be instantiated manually
