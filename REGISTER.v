@@ -20,8 +20,6 @@ module REGISTER (
     input iClk,              // Clock input
     input iRstN,             // Active low reset input
     input iWriteEn,          // Write enable input
-    input iReadEnS1,         // Read enable input for source register 1
-    input iReadEnS2,         // Read enable input for source register 2
     input [4:0] iRdAddr,     // 5 bit register address input
     input [4:0] iRs1Addr,    // 5 bit source register 1 address input
     input [4:0] iRs2Addr,    // 5 bit source register 2 address input
@@ -61,11 +59,9 @@ module REGISTER (
     // combinational logic
     // assign is for combinational logic, uses state buffers a lot
 
-    // if read is enabled, check that it's not x0 before reading in the register data
-    // repeat for both ports
-    assign oRs1Data = (iReadEnS1!=1'b0) ? ((iRs1Addr==5'b0) ? (32'b0) : (registers[iRs1Addr])) : 32'b0;
-    assign oRs2Data = (iReadEnS2!=1'b0) ? ((iRs2Addr==5'b0) ? (32'b0) : (registers[iRs2Addr])) : 32'b0;
-            
+    assign oRs1Data = registers[iRs1Addr];
+    assign oRs2Data = registers[iRs2Addr]; 
+
     
 endmodule
 
