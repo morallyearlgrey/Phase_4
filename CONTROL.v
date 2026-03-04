@@ -100,6 +100,8 @@ always @(*) begin
         7'b1101111: begin 
             rRegWrite = 1;
             rJump     = 1;
+            rPcSrc = 0;
+            rBranch = 0;
         end
 
         // JALR
