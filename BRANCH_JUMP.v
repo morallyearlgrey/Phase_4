@@ -42,7 +42,7 @@ module BRANCH_JUMP (
   // if branch taken, find the offset
   assign offset = (branch) ? iOffset : 32'd4;
 
-  assign base = (iPcSrc && iJump) ? iRs1 : iPc;
+  assign base = iPcSrc ? iRs1 : iPc;
 
   // calculate the final output program counter
   // oPC = base address + offset

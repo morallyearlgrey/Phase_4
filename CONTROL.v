@@ -65,12 +65,14 @@ always @(*) begin
             rMemRd    = 1;
             rMemtoReg = 1;
             rAluSrc2  = 1;
+            rAluOp = 3'b000;
         end
 
         // Store
         7'b0100011: begin 
             rMemWr    = 1;
             rAluSrc2  = 1;
+            rAluOp = 3'b000;
         end
 
         // Branch
@@ -84,7 +86,6 @@ always @(*) begin
         7'b0110111: begin 
             rRegWrite = 1;
             rLui      = 1;
-            rAluSrc2  = 1;
         end
 
         // AUIPC
@@ -92,6 +93,7 @@ always @(*) begin
             rRegWrite = 1;
             rAluSrc1  = 1;
             rAluSrc2  = 1;
+            rAluOp = 3'b000;
         end
 
         // JAL
@@ -106,6 +108,7 @@ always @(*) begin
             rJump     = 1;
             rPcSrc    = 1;
             rAluSrc2  = 1;
+            rAluOp = 3'b000;
         end
 
         default: begin end

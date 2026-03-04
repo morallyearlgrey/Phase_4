@@ -12,81 +12,90 @@ module DATA_MEMORY (
 );
     localparam B = 8;
     localparam K = 1024;
+    localparam BASE  = 32'h1001_0000;
+    localparam BYTES = K * 4; // 4096
 
-    reg [B-1:0] rDataMem [0:(K*4)-1]; // 4KB data memory, byte-addressable
+    reg [B-1:0] rDataMem [0:BYTES-1]; // 4KB data memory, byte-addressable
 
     initial begin
         $readmemh("data.txt", rDataMem);
     end
 
+    wire [31:0] offset;
+    assign offset = iAddress-BASE;
+    wire [11:0] bytesAddress;
+    assign bytesAddress = offset[11:0];
+
+    
+    wire check;
+    assign check = (offset < BYTES);
+
     // read logic
     // combinational logic, determined by current input without past inputs
     always @(*) begin
-        if (iMemRead == 1) begin
+        oReadData = 32'b0; 
+        if (iMemRead == 1 && check) begin
             case (iFunct3) // changes oreaddata depending on funct3
                 // load byte, signextend
                 3'b000: begin
-                    oReadData = {{24{rDataMem[iAddress][7]}}, rDataMem[iAddress+0]};
+                    oReadData = {{24{rDataMem[bytesAddress][7]}}, rDataMem[bytesAddress]};
                 end
 
                 // load halfword, signextend
                 3'b001: begin
-                    oReadData = {{16{rDataMem[iAddress+1][7]}}, rDataMem[iAddress+1], rDataMem[iAddress+0]};
+                    oReadData = {{16{rDataMem[bytesAddress+1][7]}}, rDataMem[bytesAddress+1], rDataMem[bytesAddress]};
                 end
 
                 // load word
                 3'b010: begin
-                    oReadData = {rDataMem[iAddress+3], rDataMem[iAddress+2], rDataMem[iAddress+1], rDataMem[iAddress+0]};
+                    oReadData = {rDataMem[bytesAddress+3], rDataMem[bytesAddress+2], rDataMem[bytesAddress+1], rDataMem[bytesAddress]};
                 end
 
                 // load byte unsigned, zeroextend
                 3'b100: begin
-                    oReadData = {24'b0, rDataMem[iAddress+0]};
+                    oReadData = {24'b0, rDataMem[bytesAddress]};
                 end
 
                 // load halfword unsigned, zeroextend
                 3'b101: begin
-                    oReadData = {16'b0, rDataMem[iAddress+1], rDataMem[iAddress+0]};
+                    oReadData = {16'b0, rDataMem[bytesAddress+1], rDataMem[bytesAddress]};
                 end
 
                 default:
                     oReadData = 32'b0;
-                    
+
             endcase
-
-        end else begin
-            oReadData = 32'b0;
-
         end
-        
     end
 
     // write logic
     // clock here now lol
-    always @(posedge iClk) begin
-        if (iMemWrite == 1) begin
+    always @(posedge iClk or negedge iRstN) begin
+        if(!iRstN) begin
+            
+        end
+        else if (iMemWrite == 1 && check) begin
             case (iFunct3)
                 // store byte
                 3'b000: begin
-                    rDataMem[iAddress+0] <= iWriteData[7:0];
+                    rDataMem[bytesAddress+0] <= iWriteData[7:0];
                 end
 
                 // store half-word
                 3'b001: begin
-                    rDataMem[iAddress+0] <= iWriteData[7:0];
-                    rDataMem[iAddress+1] <= iWriteData[15:8];
+                    rDataMem[bytesAddress+0] <= iWriteData[7:0];
+                    rDataMem[bytesAddress+1] <= iWriteData[15:8];
                 end
 
                 // store word
                 3'b010: begin
-                    rDataMem[iAddress+0] <= iWriteData[7:0];
-                    rDataMem[iAddress+1] <= iWriteData[15:8];
-                    rDataMem[iAddress+2] <= iWriteData[23:16];
-                    rDataMem[iAddress+3] <= iWriteData[31:24];
+                    rDataMem[bytesAddress+0] <= iWriteData[7:0];
+                    rDataMem[bytesAddress+1] <= iWriteData[15:8];
+                    rDataMem[bytesAddress+2] <= iWriteData[23:16];
+                    rDataMem[bytesAddress+3] <= iWriteData[31:24];
                 end
 
-                default:
-                    rDataMem[iAddress+0] <= 8'b0;
+                default: ;
 
             endcase
 
