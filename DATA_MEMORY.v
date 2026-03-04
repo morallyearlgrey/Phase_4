@@ -86,7 +86,7 @@ module DATA_MEMORY (
                 end
 
                 default:
-                    oReadData = 32'b0;
+                    rDataMem[iAddress+0] <= 8'b0;
 
             endcase
 
