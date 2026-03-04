@@ -1,3 +1,22 @@
+module barrel_shifter(
+    input  wire [31:0] i,
+    input  wire [4:0]  s,
+    input  wire        is_left_shift,
+    input  wire        is_sra,
+    output wire [31:0] o
+);
+    wire [31:0] t16, t8, t4, t2;
+    wire fill = is_sra ? i[31] : 1'b0;
+
+    
+
+    bitshift_stage_manual16 b16 (i,   s[4], is_left_shift, fill, t16);
+    bitshift_stage_manual8  b8  (t16, s[3], is_left_shift, fill, t8);
+    bitshift_stage_manual4  b4  (t8,  s[2], is_left_shift, fill, t4);
+    bitshift_stage_manual2  b2  (t4,  s[1], is_left_shift, fill, t2);
+    bitshift_stage_manual1  b1  (t2,  s[0], is_left_shift, fill, o);
+endmodule
+
 module mux2 (
     input wire i0,
     input wire i1,
@@ -247,21 +266,4 @@ module bitshift_stage_manual1(input wire [31:0] i, input wire s, input wire is_l
     mux2 m28(i[28], t[28], s, o[28]); mux2 m29(i[29], t[29], s, o[29]); mux2 m30(i[30], t[30], s, o[30]); mux2 m31(i[31], t[31], s, o[31]);
 endmodule
 
-module barrel_shifter(
-    input  wire [31:0] i,
-    input  wire [4:0]  s,
-    input  wire        is_left_shift,
-    input  wire        is_sra,
-    output wire [31:0] o
-);
-    wire [31:0] t16, t8, t4, t2;
-    wire fill = is_sra ? i[31] : 1'b0;
 
-    
-
-    bitshift_stage_manual16 b16 (i,   s[4], is_left_shift, fill, t16);
-    bitshift_stage_manual8  b8  (t16, s[3], is_left_shift, fill, t8);
-    bitshift_stage_manual4  b4  (t8,  s[2], is_left_shift, fill, t4);
-    bitshift_stage_manual2  b2  (t4,  s[1], is_left_shift, fill, t2);
-    bitshift_stage_manual1  b1  (t2,  s[0], is_left_shift, fill, o);
-endmodule
