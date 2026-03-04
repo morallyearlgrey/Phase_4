@@ -5,7 +5,8 @@ module RISCV_TOP (
 
   // Internal Wires
   reg [31:0] wPC;
-  initial wPC = 32'h0;
+  initial
+    wPC = 32'h0;
   wire [31:0] wNextPC, wInstr, wImm;
   wire [6:0] wOpcode, wFunct7;
   wire [2:0] wFunct3;
@@ -13,6 +14,10 @@ module RISCV_TOP (
   wire [31:0] wRs1Data, wRs2Data, wAluDataA, wAluDataB, wAluResult, wMemReadData, wWriteData, wMemToRegData;
   wire [3:0] wAluCtrl;
   wire wAluZero;
+
+  // PC+4: return address for JAL/JALR
+  wire [31:0] wPcPlus4;
+  assign wPcPlus4 = wPC + 32'd4;
 
   // Control Signals
   wire wLui, wPcSrc, wMemRd, wMemWr, wMemtoReg, wAluSrc1, wAluSrc2, wRegWrite, wBranch, wJump;
@@ -73,7 +78,7 @@ module RISCV_TOP (
              .iRdAddr(wRd),
              .iRs1Addr(wRs1),
              .iRs2Addr(wRs2),
-             .iWriteData(wWriteData),
+             .iWriteData(wFinalWriteData),
              .oRs1Data(wRs1Data),
              .oRs2Data(wRs2Data)
            );
@@ -135,6 +140,14 @@ module RISCV_TOP (
             .iData1(wImm),
             .iSel(wLui),
             .oData(wWriteData)
+          );
+
+  wire [31:0] wFinalWriteData;
+  MUX_2_1 #(32) jump_wb_mux (
+            .iData0(wWriteData),
+            .iData1(wPcPlus4),
+            .iSel(wJump),
+            .oData(wFinalWriteData)
           );
 
   // --- Branch and Jump Unit ---
