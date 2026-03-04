@@ -76,7 +76,7 @@ always @(*) begin
         // Branch
         7'b1100011: begin 
             rBranch   = 1;
-            rPcSrc    = 1;
+            rPcSrc    = 0;
             rAluOp    = 3'b001;
         end
 
@@ -98,7 +98,7 @@ always @(*) begin
         7'b1101111: begin 
             rRegWrite = 1;
             rJump     = 1;
-            rPcSrc    = 1;
+            rPcSrc    = 0;
             rAluSrc1  = 1;
             rAluSrc2  = 1;
         end

@@ -35,6 +35,8 @@ module ALU (
   localparam BNE  = 4'b1100;
   localparam BLT  = 4'b1010;
   localparam BGE  = 4'b1110;
+  localparam BLTU = 4'b1011;
+  localparam BGEU = 4'b1111;
 
   // Illegal operators
   // * , / , + , - , << , >> , <<< , >>>
@@ -74,7 +76,7 @@ module ALU (
   // Prepare B input for subtraction (2's complement inversion)
   // Note: The +1 is handled by iCin
   // SUB, BEQ, BNE, BLT, BGE involve subtraction logic
-  wire is_sub = (iAluCtrl == SUB) || (iAluCtrl == BNE) || (iAluCtrl == BLT) || (iAluCtrl == BGE);
+  wire is_sub = (iAluCtrl == SUB) || (iAluCtrl == BEQ) || (iAluCtrl == BNE) || (iAluCtrl == BLT) || (iAluCtrl == BGE) || (iAluCtrl == BLTU) || (iAluCtrl == BGEU);
   wire [31:0] adder_b = is_sub ? ~iDataB : iDataB;  // If subtracting, perform bitwise inversion of iDataB to prepare for 2's complement addition
   wire [31:0] wSum;
   /* verilator lint_off UNUSED */
@@ -200,11 +202,8 @@ module ALU (
       end
 
       // Branch Ops
-      // BEQ:
-      // begin
-      //   oData = wSum;    // Subtraction result
-      //   oZero = ~|oData; // 1 if Equal (result is 0)
-      // end
+      // BEQ shares 4'b1000 with SUB and is handled by the ADD/SUB case above:
+      //   wSum = A - B, oZero = ~|wSum = 1 if A == B  ✓
       BNE:
       begin
         oData = wSum;    // Subtraction result
@@ -219,6 +218,16 @@ module ALU (
       begin
         oData = wSum;        // Subtraction result
         oZero = ~slt_res[0]; // 1 if Greater or Equal (A >= B)
+      end
+      BLTU:
+      begin
+        oData = wSum;         // Subtraction result
+        oZero = sltu_res[0];  // 1 if Less Than unsigned (A < B)
+      end
+      BGEU:
+      begin
+        oData = wSum;          // Subtraction result
+        oZero = ~sltu_res[0];  // 1 if Greater or Equal unsigned (A >= B)
       end
 
       default:

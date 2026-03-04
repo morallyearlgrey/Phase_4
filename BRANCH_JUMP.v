@@ -42,19 +42,22 @@ module BRANCH_JUMP (
   // if branch taken, find the offset
   assign offset = (branch) ? iOffset : 32'd4;
 
-  // Find pc src and use it as base reg or base program counter
-  assign base = (iPcSrc) ? iRs1 : iPc;
+  assign base = (iPcSrc && iJump) ? iRs1 : iPc;
 
   // calculate the final output program counter
   // oPC = base address + offset
+  wire [31:0] wRawPc;
 
   LCA programCounter (
         .iDataA(base),
         .iDataB(offset),
         .iCin(1'b0),
-        .oData(oPc),
+        .oData(wRawPc),
         .oCout(oCout),
         .oZero(oZero)
       );
+
+  // JALR requires LSB forced to 0 (RISC-V spec)
+  assign oPc = (iJump && !iBranch) ? (wRawPc & ~32'd1) : wRawPc;
 
 endmodule
