@@ -105,15 +105,15 @@ module ALU (
   wire is_sra; // detects if doing arithmetic operation
   assign is_sra = (iAluCtrl == SRA);
 
-  // Derive funct3 for barrel shifter (SLL=001, SRL=101, SRA=101)
-  wire [2:0] derived_funct3 = (iAluCtrl == SLL) ? 3'b001 : 3'b101;
+  // is_left_shift: high only for SLL
+  wire is_left_shift = (iAluCtrl == SLL);
 
   // implements barrel shifter
   // shifts data A by data B
-  barrelshifter32 shifting (
+  barrel_shifter shifting (
                     .i(iDataA),
                     .s(shamt),
-                    .func3(derived_funct3),
+                    .is_left_shift(is_left_shift),
                     .is_sra(is_sra),
                     .o(shiftedRes)
                   );
