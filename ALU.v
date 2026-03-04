@@ -14,8 +14,8 @@ module ALU (
     input [31:0] iDataA, // First 32 bit input operand
     input [31:0] iDataB, // Second 32 bit input operand
     input [3:0] iAluCtrl,  // 4 bit ALU operation code
-    output reg [31:0] oData, // Output 32 bit result
-    output reg oZero
+    output [31:0] oData, // Output 32 bit result
+    output oZero
   );
 
   // ALU operation codes (from newalu.v)
@@ -158,82 +158,88 @@ module ALU (
         .oData(wXor)
       );
 
+  // Internal regs for combinational output mux
+  reg [31:0] rData;
+  reg        rZero;
+  assign oData = rData;
+  assign oZero = rZero;
+
   // --- OUTPUT MUX ---
   always @(*)
   begin
-    oData = 32'b0;
-    oZero = 1'b0; // Default
+    rData = 32'b0;
+    rZero = 1'b0; // Default
 
     case (iAluCtrl)
       ADD, SUB:
       begin
-        oData = wSum;           // ADD, SUB
-        oZero = ~|oData;
+        rData = wSum;           // ADD, SUB
+        rZero = ~|rData;
       end
       SLL, SRL, SRA:
       begin
-        oData = shiftedRes;     // Shifts
-        oZero = ~|oData;
+        rData = shiftedRes;     // Shifts
+        rZero = ~|rData;
       end
       SLT:
       begin
-        oData = slt_res;        // SLT
-        oZero = ~|oData;
+        rData = slt_res;        // SLT
+        rZero = ~|rData;
       end
       SLTU:
       begin
-        oData = sltu_res;       // SLTU
-        oZero = ~|oData;
+        rData = sltu_res;       // SLTU
+        rZero = ~|rData;
       end
       XOR:
       begin
-        oData = wXor;           // XOR
-        oZero = ~|oData;
+        rData = wXor;           // XOR
+        rZero = ~|rData;
       end
       OR:
       begin
-        oData = wOr;            // OR
-        oZero = ~|oData;
+        rData = wOr;            // OR
+        rZero = ~|rData;
       end
       AND:
       begin
-        oData = wAnd;           // AND
-        oZero = ~|oData;
+        rData = wAnd;           // AND
+        rZero = ~|rData;
       end
 
       // Branch Ops
       // BEQ shares 4'b1000 with SUB and is handled by the ADD/SUB case above:
-      //   wSum = A - B, oZero = ~|wSum = 1 if A == B  ✓
+      //   wSum = A - B, rZero = ~|wSum = 1 if A == B  ✓
       BNE:
       begin
-        oData = wSum;    // Subtraction result
-        oZero = |wSum;  // 1 if Not Equal (result is not 0)
+        rData = wSum;    // Subtraction result
+        rZero = |wSum;  // 1 if Not Equal (result is not 0)
       end
       BLT:
       begin
-        oData = wSum;       // Subtraction result
-        oZero = slt_res[0]; // 1 if Less Than (A < B)
+        rData = wSum;       // Subtraction result
+        rZero = slt_res[0]; // 1 if Less Than (A < B)
       end
       BGE:
       begin
-        oData = wSum;        // Subtraction result
-        oZero = ~slt_res[0]; // 1 if Greater or Equal (A >= B)
+        rData = wSum;        // Subtraction result
+        rZero = ~slt_res[0]; // 1 if Greater or Equal (A >= B)
       end
       BLTU:
       begin
-        oData = wSum;         // Subtraction result
-        oZero = sltu_res[0];  // 1 if Less Than unsigned (A < B)
+        rData = wSum;         // Subtraction result
+        rZero = sltu_res[0];  // 1 if Less Than unsigned (A < B)
       end
       BGEU:
       begin
-        oData = wSum;          // Subtraction result
-        oZero = ~sltu_res[0];  // 1 if Greater or Equal unsigned (A >= B)
+        rData = wSum;          // Subtraction result
+        rZero = ~sltu_res[0];  // 1 if Greater or Equal unsigned (A >= B)
       end
 
       default:
       begin
-        oData = 32'b0;
-        oZero = ~|oData;
+        rData = 32'b0;
+        rZero = ~|rData;
       end
     endcase
   end

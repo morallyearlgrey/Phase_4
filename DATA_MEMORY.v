@@ -8,7 +8,7 @@ module DATA_MEMORY (
     input [2:0] iFunct3, // selects width of the data; determines which read or store inst to do
     input iMemWrite,
     input iMemRead,
-    output reg [31:0] oReadData
+    output [31:0] oReadData
 );
     localparam B = 8;
     localparam K = 1024;
@@ -26,43 +26,46 @@ module DATA_MEMORY (
     wire [11:0] bytesAddress;
     assign bytesAddress = offset[11:0];
 
-    
     wire check;
     assign check = (offset < BYTES);
+
+    // internal reg for combinational read logic
+    reg [31:0] rReadData;
+    assign oReadData = rReadData;
 
     // read logic
     // combinational logic, determined by current input without past inputs
     always @(*) begin
-        oReadData = 32'b0; 
+        rReadData = 32'b0;
         if (iMemRead == 1 && check) begin
             case (iFunct3) // changes oreaddata depending on funct3
                 // load byte, signextend
                 3'b000: begin
-                    oReadData = {{24{rDataMem[bytesAddress][7]}}, rDataMem[bytesAddress]};
+                    rReadData = {{24{rDataMem[bytesAddress][7]}}, rDataMem[bytesAddress]};
                 end
 
                 // load halfword, signextend
                 3'b001: begin
-                    oReadData = {{16{rDataMem[bytesAddress+1][7]}}, rDataMem[bytesAddress+1], rDataMem[bytesAddress]};
+                    rReadData = {{16{rDataMem[bytesAddress+1][7]}}, rDataMem[bytesAddress+1], rDataMem[bytesAddress]};
                 end
 
                 // load word
                 3'b010: begin
-                    oReadData = {rDataMem[bytesAddress+3], rDataMem[bytesAddress+2], rDataMem[bytesAddress+1], rDataMem[bytesAddress]};
+                    rReadData = {rDataMem[bytesAddress+3], rDataMem[bytesAddress+2], rDataMem[bytesAddress+1], rDataMem[bytesAddress]};
                 end
 
                 // load byte unsigned, zeroextend
                 3'b100: begin
-                    oReadData = {24'b0, rDataMem[bytesAddress]};
+                    rReadData = {24'b0, rDataMem[bytesAddress]};
                 end
 
                 // load halfword unsigned, zeroextend
                 3'b101: begin
-                    oReadData = {16'b0, rDataMem[bytesAddress+1], rDataMem[bytesAddress]};
+                    rReadData = {16'b0, rDataMem[bytesAddress+1], rDataMem[bytesAddress]};
                 end
 
                 default:
-                    oReadData = 32'b0;
+                    rReadData = 32'b0;
 
             endcase
         end
