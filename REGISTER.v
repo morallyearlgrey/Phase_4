@@ -73,9 +73,9 @@ module REGISTER (
   // assign is for combinational logic, uses state buffers a lot
 
   // if read is enabled, check that it's not x0 before reading in the register data
-  // repeat for both ports
-  assign oRs1Data = (iReadEnS1!=1'b0) ? ((iRs1Addr==5'b0) ? (32'b0) : (registers[iRs1Addr])) : 32'b0;
-  assign oRs2Data = (iReadEnS2!=1'b0) ? ((iRs2Addr==5'b0) ? (32'b0) : (registers[iRs2Addr])) : 32'b0;
+  // Read logic (combinational)
+  assign oRs1Data = (iRs1Addr == 5'b00000) ? 32'h00000000 : registers[iRs1Addr];
+  assign oRs2Data = (iRs2Addr == 5'b00000) ? 32'h00000000 : registers[iRs2Addr];
 
 
 endmodule
