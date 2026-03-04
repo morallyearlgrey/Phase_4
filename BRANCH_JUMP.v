@@ -58,6 +58,6 @@ module BRANCH_JUMP (
       );
 
   // JALR requires LSB forced to 0 (RISC-V spec)
-  assign oPc = (iJump && !iBranch) ? (wRawPc & ~32'd1) : wRawPc;
+  assign oPc = (iJump && iPcSrc) ? (wRawPc & ~32'd1) : wRawPc;
 
 endmodule

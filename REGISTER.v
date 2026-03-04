@@ -29,6 +29,12 @@ module REGISTER (
 );
     // vector with registers, 32 bits
     reg [31:0] registers [31:0];
+
+    integer j;
+    initial begin
+        for (j = 0; j < 32; j = j + 1)
+            registers[j] = 32'b0;
+    end
     
     integer i;
 

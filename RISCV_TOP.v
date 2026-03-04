@@ -5,6 +5,7 @@ module RISCV_TOP (
 
   // Internal Wires
   reg [31:0] wPC;
+  initial wPC = 32'h0;
   wire [31:0] wNextPC, wInstr, wImm;
   wire [6:0] wOpcode, wFunct7;
   wire [2:0] wFunct3;
