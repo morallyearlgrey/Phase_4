@@ -1,3 +1,5 @@
+// /* verilator lint_off DECLFILENAME */
+
 // ALU module definition
 `include "AND.v"
 `include "barrel_shifter.v"
