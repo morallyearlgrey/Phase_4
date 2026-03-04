@@ -85,6 +85,9 @@ module DATA_MEMORY (
                     rDataMem[iAddress+3] <= iWriteData[31:24];
                 end
 
+                default:
+                    oReadData = 32'b0;
+
             endcase
 
         end
