@@ -213,7 +213,7 @@ module ALU (
       BNE:
       begin
         rData = wSum;    // Subtraction result
-        rZero = |wSum;  // 1 if Not Equal (result is not 0)
+        rZero = (wSum != 32'b0);  // 1 if Not Equal (result is not 0)
       end
       BLT:
       begin
@@ -223,7 +223,7 @@ module ALU (
       BGE:
       begin
         rData = wSum;        // Subtraction result
-        rZero = ~slt_res[0]; // 1 if Greater or Equal (A >= B)
+        rZero = !slt_res[0]; // 1 if Greater or Equal (A >= B)
       end
       BLTU:
       begin
@@ -233,13 +233,13 @@ module ALU (
       BGEU:
       begin
         rData = wSum;          // Subtraction result
-        rZero = ~sltu_res[0];  // 1 if Greater or Equal unsigned (A >= B)
+        rZero = !sltu_res[0];  // 1 if Greater or Equal unsigned (A >= B)
       end
 
       default:
       begin
         rData = 32'b0;
-        rZero = ~|rData;
+        rZero = 1'b0;
       end
     endcase
   end
