@@ -207,7 +207,7 @@ module ALU (
       BNE:
       begin
         oData = wSum;    // Subtraction result
-        oZero = |oData;  // 1 if Not Equal (result is not 0)
+        oZero = |wSum;  // 1 if Not Equal (result is not 0)
       end
       BLT:
       begin
